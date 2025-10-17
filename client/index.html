@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat por Turnos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-inner">
+      <div class="hero-top">
+        <div class="logo">Chat por Turnos</div>
+        <nav class="hero-nav" aria-label="navegación">
+          <a href="#" class="nav-link">Inicio</a>
+          <a href="como-funciona.html" class="nav-link">Cómo funciona</a>
+        </nav>
+      </div>
+
+      <h1 class="hero-title">Chat por Turnos</h1>
+      <p class="hero-subtitle">Crea un chat o ingresa con código y clave para empezar a conversar por turnos.</p>
+
+      <div class="hero-search">
+        <span class="search-icon">🔍</span>
+        <input class="search-input" placeholder="Busca un chat o crea uno nuevo..." aria-label="buscar">
+        <button class="btn small" onclick="document.getElementById('newCode').focus()">Crear</button>
+      </div>
+
+      <div class="hero-tags">
+        <span class="tag">Amigos</span>
+        <span class="tag">Secretos</span>
+        <span class="tag">Juegos</span>
+        <span class="tag">Prototipo</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main card -->
+  <main class="wrap">
+    <div class="card">
+      <header class="app-header">
+        <div>
+          <h2 style="margin:0">Gestionar Chats</h2>
+          <p class="footer-note">Crea o ingresa a un chat para comenzar</p>
+        </div>
+      </header>
+
+      <div class="grid">
+        <section>
+          <h3 style="margin-top:0; margin-bottom:8px; font-size:1rem">Crear nuevo Chat</h3>
+          <label for="newCode">Nuevo código</label>
+          <input type="text" id="newCode" placeholder="p.ej. algun numero o frase-junta">
+          <label for="newKey" style="margin-top:8px">Nueva clave</label>
+          <input type="password" id="newKey" placeholder="clave segura">
+          <div class="controls" style="margin-top:12px">
+            <button class="btn" onclick="createChat()">Crear Chat</button>
+            <button class="btn secondary" onclick="document.getElementById('newCode').value=''; document.getElementById('newKey').value=''">Limpiar</button>
+          </div>
+        </section>
+
+        <section>
+          <h3 style="margin-top:0; margin-bottom:8px; font-size:1rem">Ingresar al Chat</h3>
+          <label for="chatCode">Código del chat</label>
+          <input type="text" id="chatCode" placeholder="Código del chat">
+          <label for="chatKey" style="margin-top:8px">Clave</label>
+          <input type="password" id="chatKey" placeholder="Clave">
+          <div class="controls" style="margin-top:12px">
+            <button class="btn" onclick="enterChat()">Entrar</button>
+            <button class="btn secondary" onclick="document.getElementById('chatCode').value=''; document.getElementById('chatKey').value=''">Limpiar</button>
+          </div>
+        </section>
+      </div>
+
+      <div id="chatContainer" class="chat-area" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h3 style="margin-top:18px; margin-bottom:8px">Chat <span id="myRoleDisplay" style="display:none; font-size:0.85rem; margin-left:8px; color:var(--muted)"></span></h3>
+          <span id="turnIndicator" style="font-size:0.9rem; font-weight:600; color:var(--primary)"></span>
+        </div>
+        <div id="messages"></div>
+        <div style="margin-top:10px">
+          <textarea id="messageInput" placeholder="Escribe tu pregunta o respuesta..."></textarea>
+          <div class="controls" style="justify-content:flex-end; margin-top:8px">
+            <button id="sendMessageBtn" class="btn" onclick="sendMessage()">Enviar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="footer-note" style="margin-top:16px">
+      Consejo: crea un chat y abre otra ventana en incógnito para simular otro usuario.
+    </p>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

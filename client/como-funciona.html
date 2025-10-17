@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>¿Cómo funciona?</title>
+  <link rel="stylesheet" href="como-funciona.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-inner">
+      <div class="hero-top">
+        <div class="logo">Chat por Turnos</div>
+        <nav class="hero-nav" aria-label="navegación">
+          <a href="index.html" class="nav-link">Inicio</a>
+          <a href="#" class="nav-link active">Cómo funciona</a>
+        </nav>
+      </div>
+
+      <h1 class="hero-title">¿Cómo funciona?</h1>
+      <p class="hero-subtitle">Explora la dinámica del chat y algunas preguntas para iniciar conversaciones auténticas.</p>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <div class="card">
+      <h2>Dinámica del chat</h2>
+      <ul>
+        <li>Una persona crea el chat con un código y clave.</li>
+        <li>La otra se une con esos datos y un alias.</li>
+        <li>Se asignan roles: A y B.</li>
+        <li>Solo quien tiene el turno puede escribir.</li>
+        <li>Al enviar un mensaje, el turno cambia automáticamente.</li>
+      </ul>
+    </div>
+
+  <div class="card">
+  <h2>Preguntas para conversar</h2>
+  <p>Haz clic en una pregunta para copiarla al chat:</p>
+  <ul class="preguntas" id="preguntasList">
+    <li onclick="copiarPregunta(this)">¿Qué canción te describe hoy?</li>
+    <li onclick="copiarPregunta(this)">¿Qué te hace sentir en confianza con alguien?</li>
+    <li onclick="copiarPregunta(this)">¿Qué recuerdo te hace sonreír sin querer?</li>
+    <li onclick="copiarPregunta(this)">¿Qué te gustaría aprender juntos?</li>
+    <li onclick="copiarPregunta(this)">¿Qué harías si tuvieras un día sin responsabilidades?</li>
+    <li onclick="copiarPregunta(this)">¿Qué te gustaría que nunca se perdiera entre ustedes?</li>
+  </ul>
+
+  <div class="controls">
+    <button class="btn" onclick="mostrarAleatoria()">Mostrar pregunta aleatoria</button>
+  </div>
+</div>
+
+    <div class="controls">
+      <a href="index.html" class="btn">Volver al chat</a>
+    </div>
+  </main>
+  <script>
+function copiarPregunta(elemento) {
+  const texto = elemento.textContent;
+  navigator.clipboard.writeText(texto).then(() => {
+    elemento.style.color = "#10b981"; // verde-acento
+    elemento.style.fontWeight = "600";
+    setTimeout(() => {
+      elemento.style.color = "";
+      elemento.style.fontWeight = "";
+    }, 1200);
+  });
+}
+
+function mostrarAleatoria() {
+  const preguntas = document.querySelectorAll("#preguntasList li");
+  const aleatoria = preguntas[Math.floor(Math.random() * preguntas.length)];
+  aleatoria.scrollIntoView({ behavior: "smooth", block: "center" });
+  copiarPregunta(aleatoria);
+  aleatoria.style.background = "#e0f2ff";
+  setTimeout(() => aleatoria.style.background = "", 1000);
+}
+</script>
+</body>
+</html>

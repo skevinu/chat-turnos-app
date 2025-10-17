@@ -1,0 +1,261 @@
+/* Variables y base */
+:root{
+  --bg: #f4f7fb;
+  --card: #dedede82;
+  --muted: #506ca4;
+  --primary: #2563eb;
+  --primary-600: #1e40af;
+  --accent: #10b981;
+  --danger: #ef4444;
+  --radius: 12px;
+  --gap: 14px;
+  --max-width: 980px;
+  --pad: 20px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%; margin:0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background: linear-gradient(180deg,#f8fbff 0%,var(--bg) 100%); color:#0f172a;}
+
+/* Contenedor central */
+.wrap{
+  max-width: var(--max-width);
+  margin: 32px auto;
+  padding: 18px;
+}
+
+/* Tarjeta principal */
+.card{
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 30px rgba(61, 107, 224, 0.06);
+  padding: var(--pad);
+  border: 1px solid rgba(15,23,42,0.03);
+}
+
+/* Cabecera */
+header.app-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:18px;
+}
+header.app-header h1{font-size:1.05rem; margin:0;}
+header.app-header p{margin:0; color:var(--muted); font-size:0.9rem}
+
+/* Grid responsive */
+.grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:var(--gap);
+  align-items:start;
+}
+@media (max-width:720px){
+  .grid{grid-template-columns:1fr;}
+}
+
+/* Formularios */
+label{display:block; font-size:0.85rem; color:var(--muted); margin-bottom:6px}
+input[type="text"], input[type="password"], textarea{
+  width:100%;
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid #e6eef8;
+  background:#fbfeff;
+  outline:none;
+  font-size:0.95rem;
+  transition: box-shadow .15s, transform .08s, border-color .12s;
+}
+input:focus, textarea:focus{
+  box-shadow: 0 8px 24px rgba(37,99,235,0.10);
+  transform: translateY(-1px);
+  border-color: rgba(37,99,235,0.5);
+}
+
+/* Botones */
+.controls{display:flex; gap:8px; align-items:center; margin-top:8px}
+button.btn{
+  background: linear-gradient(180deg,var(--primary),var(--primary-600));
+  color:#fff;
+  border:none;
+  padding:10px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:600;
+  transition: transform .08s, box-shadow .12s, opacity .12s;
+}
+button.btn.secondary{
+  background:#eef2ff;
+  color:#1e293b;
+  border:1px solid #e6eef8;
+  font-weight:600;
+}
+button.btn:active{transform:translateY(0)}
+button.btn:hover{transform: translateY(-3px); box-shadow: 0 12px 30px rgba(37,99,235,0.12)}
+button.btn.secondary:hover{transform: translateY(-1px)}
+
+/* Área de chat */
+#chatContainer{margin-top:18px;}
+#messages{
+  min-height:160px;
+  max-height:340px;
+  overflow:auto;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid #eef2f7;
+  background: linear-gradient(180deg,#fbfdff,#ffffff);
+  color:#0b1220;
+  font-size:0.95rem;
+  line-height:1.4;
+  white-space:pre-wrap;
+  word-wrap:break-word;
+}
+
+/* Burbujas simples para mensajes (si decides renderizar en script.js) */
+.msg {
+  display:inline-block;
+  padding:8px 12px;
+  border-radius:12px;
+  margin-bottom:8px;
+  max-width:82%;
+  word-break:break-word;
+}
+.msg.me { background: linear-gradient(180deg, #e0f2ff, #dbeeff); color:#042a52; border:1px solid rgba(30,64,175,0.06); align-self:flex-end; }
+.msg.them { background: linear-gradient(180deg,#fbfbff,#f3f6ff); color:#0b1220; border:1px solid rgba(14,20,40,0.03); }
+
+/* Input area */
+textarea#messageInput{resize:vertical; min-height:60px; max-height:140px; margin-top:8px;}
+
+/* Pie y notas */
+.footer-note{margin-top:10px; color:var(--muted); font-size:0.85rem; text-align:center}
+
+/* Separador sutil */
+hr{border:0; height:1px; background:linear-gradient(90deg,transparent,#eef2f7,transparent); margin:18px 0}
+
+/* Accesibilidad / focus visible */
+:focus{outline-offset:3px}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none!important}
+}
+
+/* Hero (nuevo) */
+.hero{
+  position:relative;
+  min-height:360px;
+  display:flex;
+  align-items:center;
+  color:#fff;
+  overflow:hidden;
+}
+.hero-overlay{
+  position:absolute;
+  inset:0;
+  background: radial-gradient(1200px 400px at 10% 20%, rgba(37,99,235,0.25), transparent 10%),
+              radial-gradient(900px 320px at 90% 80%, rgba(16,185,129,0.12), transparent 10%),
+              linear-gradient(180deg, rgba(2, 18, 59, 0.82), rgb(0, 3, 11));
+  mix-blend-mode: multiply;
+  z-index:0;
+}
+.hero-inner{
+  position:relative;
+  z-index:1;
+  width:100%;
+  max-width:1100px;
+  margin:0 auto;
+  padding:36px 20px;
+  text-align:center;
+}
+.hero-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:18px;
+  color:rgba(255,255,255,0.9);
+}
+.logo{font-weight:700; letter-spacing:0.4px}
+.hero-nav .nav-link{color:rgba(255,255,255,0.85); margin-left:14px; text-decoration:none; font-size:0.95rem}
+.hero-title{
+  font-size:2.2rem;
+  margin:6px 0;
+  line-height:1.02;
+  font-weight:700;
+  letter-spacing:-0.02em;
+}
+.hero-subtitle{
+  color:rgba(255,255,255,0.85);
+  margin:8px auto 18px;
+  max-width:760px;
+  font-size:1rem;
+}
+
+/* Search pill in hero */
+.hero-search{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  background: rgba(255,255,255,0.12);
+  padding:10px;
+  border-radius:40px;
+  width:72%;
+  max-width:720px;
+  margin:0 auto;
+  border:1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(6px);
+}
+.search-icon{opacity:0.95; margin-left:6px}
+.search-input{
+  flex:1;
+  border:0;
+  background:transparent;
+  color:#fff;
+  font-size:1rem;
+  padding:6px 8px;
+  outline:none;
+}
+.hero-search .btn.small{
+  padding:8px 12px;
+  border-radius:30px;
+  font-size:0.95rem;
+}
+
+/* tags below search */
+.hero-tags{
+  margin-top:18px;
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.tag{
+  padding:8px 12px;
+  border-radius:999px;
+  background: rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.06);
+  color:rgba(255,255,255,0.95);
+  font-size:0.85rem;
+}
+
+/* Ajustes responsive */
+@media (max-width:900px){
+  .hero-title{font-size:1.9rem}
+  .hero-search{width:86%}
+}
+@media (max-width:540px){
+  .hero{
+    min-height:420px;
+    padding-bottom:20px;
+  }
+  .hero-title{font-size:1.6rem}
+  .hero-subtitle{font-size:0.95rem; padding:0 8px}
+  .hero-search{width:92%}
+  .hero-top{flex-direction:column; align-items:center}
+  .hero-nav{display:none}
+  .grid{grid-template-columns:1fr;}
+  .wrap{padding:14px}
+  .card{padding:14px}
+  .hero-inner{padding:28px 12px}
+}
+
+/* pequeño ajuste para contraste de inputs en la parte principal */
+input, textarea{color: #07102a}
