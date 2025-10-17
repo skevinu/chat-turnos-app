@@ -1,3 +1,5 @@
+const multer = require("multer");
+const upload = multer(); // almacenamiento en memoria
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -69,16 +71,25 @@ app.post("/api/join", (req, res) => {
 });
 
 // Enviar un mensaje
-app.post("/api/message", (req, res) => {
+app.post("/api/message", upload.single("image"), (req, res) => {
   try {
     const { chatCode, chatKey, text, role } = req.body;
+    const imageFile = req.file;
     const chat = chats[chatCode];
+
     if (!chat || chat.key !== chatKey) return res.status(403).json({ error: "No autorizado" });
     if (chat.turn !== role) return res.status(403).json({ error: "No es tu turno" });
 
     const author = chat.users[role] || role;
-    chat.messages.push(`${author}: ${text}`);
+
+    let imageUrl = null;
+    if (imageFile) {
+      imageUrl = `data:${imageFile.mimetype};base64,${imageFile.buffer.toString("base64")}`;
+    }
+
+    chat.messages.push({ sender: author, text, imageUrl });
     chat.turn = role === "A" ? "B" : "A";
+
     res.json({ messages: chat.messages, turn: chat.turn });
   } catch (e) {
     console.error("[ERROR en /api/message]:", e);
@@ -103,4 +114,5 @@ app.post("/api/list", (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => console.log(`Servidor activo en http://localhost:${PORT}`));
