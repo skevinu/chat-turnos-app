@@ -198,5 +198,20 @@ document.getElementById('fotoInput').addEventListener('change', function (e) {
     reader.readAsDataURL(file);
   }
 });
-  
+  document.getElementById('fotoInput').addEventListener('change', function (e) {
+  const file = e.target.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function () {
+    const img = document.createElement('img');
+    img.src = reader.result;
+    img.className = 'imagen-turno';
+    document.getElementById('messages').appendChild(img);
+  };
+
+  if (file) {
+    reader.readAsDataURL(file);
+  }
+});
 }
+
