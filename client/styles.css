@@ -269,6 +269,20 @@ hr{border:0; height:1px; background:linear-gradient(90deg,transparent,#eef2f7,tr
   box-shadow: 0 0 5px rgba(0,0,0,0.2);
 }
 
+.foto-label {
+  cursor: pointer;
+  font-size: 20px;
+  padding: 6px;
+  border-radius: 4px;
+  background-color: #eee;
+  transition: background-color 0.2s;
+}
+
+.foto-label:hover {
+  background-color: #ddd;
+}
+
 /* pequeño ajuste para contraste de inputs en la parte principal */
 input, textarea{color: #07102a}
+
 
