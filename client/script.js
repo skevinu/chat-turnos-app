@@ -1,3 +1,5 @@
+const multer = require('multer');
+const upload = multer(); // almacenamiento en memoria
 let chatCode = "";
 let chatKey = "";
 let myRole = "";
@@ -222,5 +224,6 @@ document.getElementById('fotoInput').addEventListener('change', function (e) {
   }
 });
 }
+
 
 
