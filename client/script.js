@@ -208,9 +208,12 @@ function escapeHtml(str) {
   });
 }
 
-document.getElementById('fotoInput').addEventListener('change', function (e) {
-  selectedFile = e.target.files[0];
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById('fotoInput').addEventListener('change', function (e) {
+    selectedFile = e.target.files[0];
+  });
 });
+
 
 
 
