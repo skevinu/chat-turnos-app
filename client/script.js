@@ -143,6 +143,15 @@ function renderMessages(messages) {
   }
 }
 
+    html += `</div>`;
+    return html;
+  }).join("");
+
+  if (shouldScroll) {
+    container.scrollTop = container.scrollHeight;
+  }
+}
+
 function updateTurnUI(currentTurn) {
   const messageInput = document.getElementById("messageInput");
   const sendButton = document.getElementById("sendMessageBtn"); // Usar ID específico
@@ -224,6 +233,7 @@ document.getElementById('fotoInput').addEventListener('change', function (e) {
   }
 });
 }
+
 
 
 
