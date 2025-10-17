@@ -80,9 +80,13 @@
           <span id="turnIndicator" style="font-size:0.9rem; font-weight:600; color:var(--primary)"></span>
         </div>
         <div id="messages"></div>
-       <div style="margin-top:10px">
+     <div style="margin-top:10px">
   <textarea id="messageInput" placeholder="Escribe tu pregunta o respuesta..."></textarea>
-  <div class="controls" style="justify-content:flex-end; margin-top:8px">
+  <div class="controls" style="justify-content:flex-end; margin-top:8px; gap:8px; align-items:center">
+    
+    <label for="fotoInput" class="foto-label" title="Enviar una foto">📷</label>
+    <input type="file" accept="image/*" id="fotoInput" style="display:none;" />
+
     <button id="sendMessageBtn" class="btn" onclick="sendMessage()">Enviar</button>
   </div>
 </div>
@@ -106,4 +110,5 @@
 </body>
 
 </html>
+
 
