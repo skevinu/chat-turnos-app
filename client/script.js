@@ -1,10 +1,9 @@
-const multer = require('multer');
-const upload = multer(); // almacenamiento en memoria
 let chatCode = "";
 let chatKey = "";
 let myRole = "";
 let myName = "";
 let refreshInterval;
+let selectedFile = null;
 
 function createChat() {
   const newCode = document.getElementById("newCode").value;
@@ -20,7 +19,7 @@ function createChat() {
     body: JSON.stringify({ chatCode: newCode, chatKey: newKey })
   })
   .then(async res => {
-    const body = await res.json().catch(()=>({}));
+    const body = await res.json().catch(() => ({}));
     if (!res.ok) throw body;
     alert("Chat creado correctamente. Ahora puedes ingresar con el código y la clave.");
     document.getElementById("chatCode").value = newCode;
@@ -57,10 +56,8 @@ function enterChat() {
     body: JSON.stringify({ chatCode, chatKey, name: myName })
   })
   .then(async res => {
-    // Lee el cuerpo de la respuesta como texto.
     const responseText = await res.text();
     if (!res.ok) {
-      // Intenta parsear el texto como JSON, si falla, usa el texto directamente.
       try {
         const errorJson = JSON.parse(responseText);
         throw errorJson;
@@ -68,15 +65,17 @@ function enterChat() {
         throw new Error(`Error ${res.status}: ${responseText}`);
       }
     }
-    // Si la respuesta es OK, parsea el texto como JSON.
     return JSON.parse(responseText);
   })
   .then(data => {
     myRole = data.role;
     document.getElementById("chatContainer").style.display = "block";
     const rb = document.getElementById("myRoleDisplay");
-    if (rb) { rb.textContent = `Rol: ${myRole}`; rb.style.display = "inline-block"; }
-    
+    if (rb) {
+      rb.textContent = `Rol: ${myRole}`;
+      rb.style.display = "inline-block";
+    }
+
     if (refreshInterval) clearInterval(refreshInterval);
     refreshInterval = setInterval(refreshMessages, 3000);
     refreshMessages();
@@ -94,16 +93,24 @@ function enterChat() {
 
 function sendMessage() {
   const text = document.getElementById("messageInput").value;
-  if (!text) return;
+  if (!text && !selectedFile) return;
+
+  const formData = new FormData();
+  formData.append("chatCode", chatCode);
+  formData.append("chatKey", chatKey);
+  formData.append("role", myRole);
+  formData.append("text", text);
+  if (selectedFile) {
+    formData.append("image", selectedFile);
+  }
 
   fetch("/api/message", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ chatCode, chatKey, text, role: myRole })
+    body: formData
   })
   .then(async res => {
     if (!res.ok) {
-      const e = await res.json().catch(()=>({ error: "Error al enviar" }));
+      const e = await res.json().catch(() => ({ error: "Error al enviar" }));
       throw e;
     }
     return res.json();
@@ -111,9 +118,31 @@ function sendMessage() {
   .then(data => {
     renderMessages(data.messages);
     document.getElementById("messageInput").value = "";
+    selectedFile = null;
+    document.getElementById("fotoInput").value = "";
   })
   .catch(err => {
     alert(err.error || "Error al enviar el mensaje");
+  });
+}
+
+function refreshMessages() {
+  if (!chatCode || !chatKey) return;
+
+  fetch("/api/list", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ chatCode, chatKey })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.messages) {
+      renderMessages(data.messages);
+    }
+    updateTurnUI(data.turn);
+  })
+  .catch(err => {
+    console.error("Error al actualizar mensajes:", err);
   });
 }
 
@@ -143,21 +172,12 @@ function renderMessages(messages) {
   }
 }
 
-    html += `</div>`;
-    return html;
-  }).join("");
-
-  if (shouldScroll) {
-    container.scrollTop = container.scrollHeight;
-  }
-}
-
 function updateTurnUI(currentTurn) {
   const messageInput = document.getElementById("messageInput");
-  const sendButton = document.getElementById("sendMessageBtn"); // Usar ID específico
+  const sendButton = document.getElementById("sendMessageBtn");
   const turnIndicator = document.getElementById("turnIndicator");
 
-  if (!messageInput || !sendButton) return; // Salida segura si los elementos no existen
+  if (!messageInput || !sendButton) return;
 
   if (currentTurn === myRole) {
     messageInput.disabled = false;
@@ -169,21 +189,6 @@ function updateTurnUI(currentTurn) {
     sendButton.disabled = true;
     messageInput.placeholder = "Esperando al otro usuario...";
     if (turnIndicator) turnIndicator.textContent = `⏳ Turno de: ${currentTurn}`;
-  }
-}
-
-function renderMessages(messages) {
-  const container = document.getElementById("messages");
-  const shouldScroll = container.scrollTop + container.clientHeight >= container.scrollHeight - 20;
-  
-  container.innerHTML = messages.map(msg => {
-    const isMe = msg.startsWith(`${myName}:`);
-    const cls = isMe ? "msg me" : "msg them";
-    return `<div class="${cls}">${escapeHtml(msg)}</div>`;
-  }).join("");
-
-  if (shouldScroll) {
-    container.scrollTop = container.scrollHeight;
   }
 }
 
@@ -201,38 +206,12 @@ function escapeHtml(str) {
       '=': '&#x3D;'
     })[s];
   });
+}
 
 document.getElementById('fotoInput').addEventListener('change', function (e) {
-  const file = e.target.files[0];
-  const reader = new FileReader();
-
-  reader.onload = function () {
-    const img = document.createElement('img');
-    img.src = reader.result;
-    img.className = 'imagen-turno';
-    document.getElementById('turno').appendChild(img);
-  };
-
-  if (file) {
-    reader.readAsDataURL(file);
-  }
+  selectedFile = e.target.files[0];
 });
-  document.getElementById('fotoInput').addEventListener('change', function (e) {
-  const file = e.target.files[0];
-  const reader = new FileReader();
 
-  reader.onload = function () {
-    const img = document.createElement('img');
-    img.src = reader.result;
-    img.className = 'imagen-turno';
-    document.getElementById('messages').appendChild(img);
-  };
-
-  if (file) {
-    reader.readAsDataURL(file);
-  }
-});
-}
 
 
 
