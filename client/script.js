@@ -115,22 +115,30 @@ function sendMessage() {
   });
 }
 
-// Pequeña utilidad para refrescar mensajes (opcional)
-function refreshMessages() {
-  if (!chatCode || !chatKey) return;
-  fetch("/api/list", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ chatCode, chatKey })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.messages) {
-      renderMessages(data.messages);
+function renderMessages(messages) {
+  const container = document.getElementById("messages");
+  const shouldScroll = container.scrollTop + container.clientHeight >= container.scrollHeight - 20;
+
+  container.innerHTML = messages.map(msg => {
+    const isMe = msg.sender === myName;
+    const cls = isMe ? "msg me" : "msg them";
+    let html = `<div class="${cls}">`;
+
+    if (msg.text) {
+      html += `<p>${escapeHtml(msg.text)}</p>`;
     }
-    updateTurnUI(data.turn);
-  })
-  .catch(() => { /* Silencio en caso de fallo de red */ });
+
+    if (msg.imageUrl) {
+      html += `<img src="${msg.imageUrl}" class="imagen-turno" />`;
+    }
+
+    html += `</div>`;
+    return html;
+  }).join("");
+
+  if (shouldScroll) {
+    container.scrollTop = container.scrollHeight;
+  }
 }
 
 function updateTurnUI(currentTurn) {
@@ -214,4 +222,5 @@ document.getElementById('fotoInput').addEventListener('change', function (e) {
   }
 });
 }
+
 
