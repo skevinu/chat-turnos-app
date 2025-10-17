@@ -257,5 +257,18 @@ hr{border:0; height:1px; background:linear-gradient(90deg,transparent,#eef2f7,tr
   .hero-inner{padding:28px 12px}
 }
 
+#foto-turno {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.imagen-turno {
+  max-width: 80%;
+  border-radius: 8px;
+  margin-top: 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
 /* pequeño ajuste para contraste de inputs en la parte principal */
 input, textarea{color: #07102a}
+
